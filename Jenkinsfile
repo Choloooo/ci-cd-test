@@ -20,5 +20,19 @@ pipeline {
                 sh 'venv/bin/python -m pytest --ds=mysite.settings'
             }
         }
+        stage('Deploy Locally') {
+            steps {
+                sh '''
+                    # Apply migrations
+                    venv/bin/python manage.py migrate
+                    
+                    # Collect static files (if needed)
+                    venv/bin/python manage.py collectstatic --noinput
+                    
+                    # Start Django server in the background
+                    nohup venv/bin/python manage.py runserver 0.0.0.0:8000 > django.log 2>&1 &
+                '''
+            }
+        }
     }
 }
