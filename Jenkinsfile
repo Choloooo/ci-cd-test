@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh 'venv/bin/pytest --ds=mysite.settings'
+                sh 'venv/bin/python -m pytest --ds=mysite.settings'
             }
         }
     }
